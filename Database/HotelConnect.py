@@ -55,6 +55,18 @@ class Address(DbConnector):
         DbConnector.__init__(self)
     '''Höldum áfram með öll table-in í databaseinu...'''
 
+class Employee(DbConnector):
+    def __init__(self):
+        DbConnector.__init__(self)
+
+    def EmployeeAdd(self, Param_EmpSSN, Param_AddressID, Param_Title, Param_LName, Param_FName, Param_Email, Param_Phone, Param_User, Param_Pass, Param_NewID):
+        new_id = 0
+        result = self.execute_procedure('EmployeeAdd', [Param_EmpSSN, Param_AddressID, Param_Title, Param_LName, Param_FName, Param_Email, Param_Phone, Param_User, Param_Pass, Param_NewID])
+        if result:
+            new_id = int(result[0][0])
+        return new_id
+
+
 
 class CommonPS(DbConnector):
     def __init__(self):

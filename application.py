@@ -1,6 +1,6 @@
 from Database.HotelConnect import *
 
-
+Employee = Employee()
 Common = CommonPS()
 
 # Nokkur dæmi um virkni
@@ -17,8 +17,8 @@ Common = CommonPS()
 #for i in result:
 #    TotalAmountDue += i[5]
 #print(TotalAmountDue)
-result = Common.ReservationAdd(Param_EmpID=1, Param_CusID=6, Param_OrderDate='2018-05-03')
+#result = Common.ReservationAdd(Param_EmpID=1, Param_CusID=6, Param_OrderDate='2018-05-03')
+
+result = Employee.EmployeeAdd('0000000000', 13, 'sampletitle', 'samplelname', 'samplefname', 'sample@sample.com', '000-000-0000', 'sampleuser', 'samplepass', None)
 
 print(result)
-
-
