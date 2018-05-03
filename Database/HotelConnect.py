@@ -61,18 +61,18 @@ class CommonPS(DbConnector):
         DbConnector.__init__(self)
 
     def HireEmployee(self, Param_Zip, Param_CityName, Param_CountryName, Param_StreetName, Param_BuildingNum, Param_HotelID, Param_EmpSSN, Param_Title, Param_LName, Param_FName, Param_Email, Param_Phone, Param_User, Param_Pass, Param_ApartNum=None,):
-        rows_affected = 0
+        new_id = 0
         result = self.execute_procedure('EmployeeHire_Bundle', [Param_Zip, Param_CityName, Param_CountryName, Param_StreetName, Param_BuildingNum, Param_ApartNum, Param_HotelID, Param_EmpSSN, Param_Title, Param_LName, Param_FName, Param_Email, Param_Phone, Param_User, Param_Pass])
         if result:
-            rows_affected = int(result[0][0])
-        return rows_affected
+            new_id = int(result[0][0])
+        return new_id
 
     def RegisterCustomer(self, Param_Zip, Param_CityName, Param_CountryName, Param_StreetName, Param_BuildingNum, Param_CusSSN, Param_LName, Param_FName, Param_Email, Param_Phone, Param_User, Param_Pass, Param_ApartNum=None):
-        rows_affected = 0
+        new_id = 0
         result = self.execute_procedure('CustomerRegister_Bundle', [Param_Zip, Param_CityName, Param_CountryName, Param_StreetName, Param_BuildingNum, Param_ApartNum, Param_CusSSN, Param_LName, Param_FName, Param_Email, Param_Phone, Param_User, Param_Pass])
         if result:
-            rows_affected = int(result[0][0])
-        return rows_affected
+            new_id = int(result[0][0])
+        return new_id
 
     def CheckAvailability(self, New_Start, New_End, Param_HotelID, Param_TypeID):
         rows_affected = 0
@@ -81,3 +81,26 @@ class CommonPS(DbConnector):
             return result
         else:
             return list()
+
+    def TotalServiceBill(self, Param_OrderID):
+        rows_affected = 0
+        result = self.execute_procedure('TotalServiceBill', [Param_OrderID])
+        if result:
+            return result
+        else:
+            return list()
+
+    def TotalRoomBill(self, Param_OrderID):
+        rows_affected = 0
+        result = self.execute_procedure('TotalRoomBill', [Param_OrderID])
+        if result:
+            return result
+        else:
+            return list()
+
+    def ReservationAdd(self, Param_EmpID, Param_CusID, Param_OrderDate):
+        new_id = 0
+        result = self.execute_procedure('ReservationAdd', [Param_EmpID, Param_CusID, Param_OrderDate])
+        if result:
+            new_id = int(result[0][0])
+        return new_id

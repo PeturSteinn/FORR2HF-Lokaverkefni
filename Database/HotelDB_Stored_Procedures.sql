@@ -149,7 +149,7 @@ BEGIN
 
 END //
 DELIMITER ;
-CALL `CheckAvailability`('2018-05-02', '2018-05-03', 3, 1);
+
 
 -- Get room bill not including service.
 
@@ -940,8 +940,7 @@ DROP PROCEDURE IF EXISTS `ReservationAdd` //
 CREATE PROCEDURE `ReservationAdd` (
   `Param_EmpID` int,
   `Param_CusID` int,
-  `Param_OrderDate` datetime,
-  OUT `Reservation_NewID` int
+  `Param_OrderDate` datetime
 )
 BEGIN
   INSERT INTO `Order` (
@@ -954,7 +953,7 @@ BEGIN
     `Param_CusID`,
     `Param_OrderDate`
   );
-  SELECT LAST_INSERT_ID() INTO `Reservation_NewID`;
+  SELECT LAST_INSERT_ID();
 END //
 DELIMITER ;
 
