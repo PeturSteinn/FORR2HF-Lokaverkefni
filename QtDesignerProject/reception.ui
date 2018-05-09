@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ReceptionWindow</class>
+ <widget class="QMainWindow" name="ReceptionWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>583</width>
+    <height>394</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Hraun Hótel - Móttökuritari</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Reception</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>583</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <widget class="QMenu" name="menuB_kanir">
+    <property name="title">
+     <string>Bókanir</string>
+    </property>
+    <addaction name="actionBoka"/>
+    <addaction name="actionSja_bokanir"/>
+   </widget>
+   <addaction name="menuB_kanir"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionBoka">
+   <property name="text">
+    <string>Bóka</string>
+   </property>
+  </action>
+  <action name="actionSja_bokanir">
+   <property name="text">
+    <string>Sjá bókanir</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

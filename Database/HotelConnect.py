@@ -125,6 +125,13 @@ class CommonPS(DbConnector):
         else:
             return list()
 
+    def HotelAbout(self):
+        result = self.execute_procedure('HotelAbout')
+        if result:
+            return result
+        else:
+            return list()
+
 class Address(DbConnector):
     def __init__(self):
         DbConnector.__init__(self)

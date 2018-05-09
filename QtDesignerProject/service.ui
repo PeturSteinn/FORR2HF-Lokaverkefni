@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ServiceWindow</class>
+ <widget class="QMainWindow" name="ServiceWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>528</width>
+    <height>501</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Hraun Hótel - Þjónustuaðili</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Service</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>528</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuPantanir">
+    <property name="title">
+     <string>Pantanir</string>
+    </property>
+    <addaction name="actionLista_pantanir"/>
+   </widget>
+   <addaction name="menuPantanir"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionLista_pantanir">
+   <property name="text">
+    <string>Lista pantanir</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
