@@ -34,7 +34,7 @@ Höfundar: *Pétur Steinn Guðmundsson, Helgi Tuan Helgason, Róbert Ingi Hálfd
 Forritið er hannað fyrst og fremst fyrir starfsmenn Hraun Hótels
 Eftir því hvort þú ert **stjórnandi**, **móttökuritari** eða **þjónustufólk** opnast viðeigandi síða eftir innskráningu. (Eins og stendur er aðeins síðan fyrir móttökuritarana tilbúin *11/5/18*.)
 
-T.d. sem móttökuritari geturðu: Bóka, bætt við herbergjum á bókun, nýskrá viðskiptavin, flett upp sögu viðskiptavina (bókanir, herbergi, þjónustur).
+T.d. sem móttökuritari geturðu: Bókað, bætt við herbergjum á bókun, nýskráð viðskiptavin, flett upp sögu viðskiptavina (bókanir, herbergi, þjónustur).
 
 ### Leiðbeiningar
 #### Stjórnandi
