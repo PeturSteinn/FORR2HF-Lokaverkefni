@@ -30,11 +30,12 @@ class Ui_ReceptionWindow(object):
 "}\n"
 "\n"
 "QToolButton#toolButton, QToolButton#toolButton_2, QToolButton#toolButton_3, QToolButton#toolButton_4, QToolButton#toolButton_5, QToolButton#toolButton_6 {\n"
-"background-color: #7BB2D9;/*#7BB2D9;*/\n"
+"background-color: #7BB2D9;\n"
 "border-radius: 7px;\n"
 "color: #3F4045;\n"
 "}\n"
-"QToolButton:checked, QToolButton:pressed, QToolButton:hover {\n"
+"\n"
+"#frame QToolButton:checked, #frame QToolButton:pressed, #frame QToolButton:hover {\n"
 "color: #fff;\n"
 "}\n"
 "QLabel#labelTopName, QLabel#labelTopTitle {\n"
@@ -63,11 +64,13 @@ class Ui_ReceptionWindow(object):
         self.toolButton.setIcon(icon1)
         self.toolButton.setIconSize(QtCore.QSize(32, 32))
         self.toolButton.setCheckable(True)
+        self.toolButton.setChecked(True)
         self.toolButton.setAutoExclusive(True)
         self.toolButton.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         self.toolButton.setObjectName("toolButton")
         self.toolButton_2 = QtWidgets.QToolButton(self.frame)
         self.toolButton_2.setGeometry(QtCore.QRect(20, 70, 51, 51))
+        self.toolButton_2.setStyleSheet("")
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(":/icons/hotel_and_services/png/room-key-1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.toolButton_2.setIcon(icon2)

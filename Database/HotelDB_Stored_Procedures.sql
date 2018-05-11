@@ -134,11 +134,11 @@ CREATE PROCEDURE `CheckAvailability` (
 )
 BEGIN																													#RIGHT
 	SELECT DISTINCT(`Room`.RoomID), `Room`.DoorNum
-    FROM `Order_Has_Rooms` INNER JOIN `Room` ON `Room`.RoomID = `Order_Has_Rooms`.RoomID
+    FROM `Order_Has_Rooms` RIGHT JOIN `Room` ON `Room`.RoomID = `Order_Has_Rooms`.RoomID
 	WHERE `Room`.HotelID = `Param_HotelID`
 	AND `Room`.TypeID = `Param_TypeID`
 	AND `Room`.RoomID NOT IN (																						#RIGHT
-    SELECT `Room`.RoomID FROM `Order_Has_Rooms` INNER JOIN `Room` ON `Room`.RoomID = `Order_Has_Rooms`.RoomID
+    SELECT `Room`.RoomID FROM `Order_Has_Rooms` RIGHT JOIN `Room` ON `Room`.RoomID = `Order_Has_Rooms`.RoomID
 	WHERE `New_Start` < `Order_Has_Rooms`.CheckOutDate
 	AND `New_End` > `Order_Has_Rooms`.CheckInDate
 	AND `Room`.HotelID = `Param_HotelID`

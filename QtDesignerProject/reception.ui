@@ -46,11 +46,12 @@ border: none;
 }
 
 QToolButton#toolButton, QToolButton#toolButton_2, QToolButton#toolButton_3, QToolButton#toolButton_4, QToolButton#toolButton_5, QToolButton#toolButton_6 {
-background-color: #7BB2D9;/*#7BB2D9;*/
+background-color: #7BB2D9;
 border-radius: 7px;
 color: #3F4045;
 }
-QToolButton:checked, QToolButton:pressed, QToolButton:hover {
+
+#frame QToolButton:checked, #frame QToolButton:pressed, #frame QToolButton:hover {
 color: #fff;
 }
 QLabel#labelTopName, QLabel#labelTopTitle {
@@ -114,6 +115,9 @@ border-top: 1px solid rgba(0,0,0,0.2);
      <property name="checkable">
       <bool>true</bool>
      </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
      <property name="autoExclusive">
       <bool>true</bool>
      </property>
@@ -129,6 +133,9 @@ border-top: 1px solid rgba(0,0,0,0.2);
        <width>51</width>
        <height>51</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
      </property>
      <property name="text">
       <string>Herbergi</string>
