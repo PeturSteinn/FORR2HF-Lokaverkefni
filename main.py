@@ -243,9 +243,11 @@ class ReceptWindow(QtWidgets.QMainWindow, Ui_ReceptionWindow):
 
         result = cus.CustomerList()
         for i in result:
-            print(i[1], self.lineEditCusRegSSN.text())
             if i[1] == self.lineEditCusRegSSN.text():
                 self.showMessageBox("Viðvörðun!", "Viðskiptavinur er núþegar til í kerfinu og er með númerið {}".format(i[0]))
+                break
+            elif i[7] == self.lineEditCusRegUser.text():
+                self.showMessageBox("Viðvörðun!", "Notandanafnið {} er núþegar í notkun".format(self.lineEditCusRegUser.text()))
                 break
 
         else:
@@ -268,6 +270,7 @@ class ReceptWindow(QtWidgets.QMainWindow, Ui_ReceptionWindow):
                     self.showMessageBox("Viðvörðun!", "Æskilegt er að lykilorð sé meira en fimm stafir!")
 
                 else:
+
 
                     if len(self.lineEditCusRegApartNum.text()) == 0:
                         tmp = None

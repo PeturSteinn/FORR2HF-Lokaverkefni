@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'reception.ui'
+# Form implementation generated from reading ui file 'QtDesignerProject/reception.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -628,11 +628,11 @@ class Ui_ReceptionWindow(object):
         self.toolButton_5.setText(_translate("ReceptionWindow", "Um mig"))
         self.btnCreateOrder.setText(_translate("ReceptionWindow", "Panta"))
         self.label_7.setText(_translate("ReceptionWindow", "Kennitala"))
-        self.label_8.setText(_translate("ReceptionWindow", "Order ID"))
+        self.label_8.setText(_translate("ReceptionWindow", "Pöntunarnúmer"))
         self.label_6.setText(_translate("ReceptionWindow", "Staðsetning"))
         self.label_10.setText(_translate("ReceptionWindow", "Tegund herbergis"))
-        self.label.setText(_translate("ReceptionWindow", "CheckIn"))
-        self.label_2.setText(_translate("ReceptionWindow", "CheckOut"))
+        self.label.setText(_translate("ReceptionWindow", "Innskráning"))
+        self.label_2.setText(_translate("ReceptionWindow", "Útskráning"))
         self.label_9.setText(_translate("ReceptionWindow", "Room"))
         self.btnFindAvailableRooms.setText(_translate("ReceptionWindow", "Finna laus herbergi"))
         self.btnAddRoomToOrder.setText(_translate("ReceptionWindow", "Bæta við herbergi"))

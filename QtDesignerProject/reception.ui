@@ -338,7 +338,7 @@ border-top: 1px solid rgba(0,0,0,0.2);
          <item alignment="Qt::AlignLeft">
           <widget class="QLabel" name="label_8">
            <property name="text">
-            <string>Order ID</string>
+            <string>Pöntunarnúmer</string>
            </property>
           </widget>
          </item>
@@ -428,7 +428,7 @@ border-top: 1px solid rgba(0,0,0,0.2);
          <item alignment="Qt::AlignLeft">
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>CheckIn</string>
+            <string>Innskráning</string>
            </property>
           </widget>
          </item>
@@ -457,7 +457,7 @@ border-top: 1px solid rgba(0,0,0,0.2);
          <item alignment="Qt::AlignLeft">
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>CheckOut</string>
+            <string>Útskráning</string>
            </property>
           </widget>
          </item>
