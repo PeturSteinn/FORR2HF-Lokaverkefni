@@ -61,8 +61,8 @@ class LoginWindow(QtWidgets.QDialog, Ui_LoginForm):
         self.btncancellogin.clicked.connect(QtCore.QCoreApplication.instance().quit)
         self.logo.setPixmap(QPixmap('resources/logo150.png'))
 
-
         self.show()
+
 
     def mainReceptionWindow(self):
         self.receptionWindow = ReceptWindow()
@@ -117,7 +117,15 @@ class AdminWindow(QtWidgets.QMainWindow, Ui_AdminWindow):
     def __init__(self):
         super(AdminWindow, self).__init__()
         self.setupUi(self)
+        self.actionSkra_ut.triggered.connect(self.logOut)
+        self.actionH_tta.triggered.connect(self.close)
+
         self.show()
+
+    def logOut(self):
+        self.menubar.clear()
+        self.loginWindow = LoginWindow()
+        self.hide()
 
 class ReceptWindow(QtWidgets.QMainWindow, Ui_ReceptionWindow):
     def __init__(self):
@@ -149,6 +157,8 @@ class ReceptWindow(QtWidgets.QMainWindow, Ui_ReceptionWindow):
         self.btnRegCus.clicked.connect(self.registerCustomer)
         self.btnSearchCusHistory.clicked.connect(self.searchCusHistory)
         self.treeCustHistory.setHeaderLabel("Fullt nafn")
+        self.actionSkra_ut.triggered.connect(self.logOut)
+        self.actionH_tta.triggered.connect(self.close)
         loggedInUser.empgetinfo()
 
         # About user
@@ -181,6 +191,10 @@ class ReceptWindow(QtWidgets.QMainWindow, Ui_ReceptionWindow):
         self.stackedWidget.setCurrentWidget(i)
         self.labelTopTitle.setText(action)
 
+    def logOut(self):
+        self.menubar.clear()
+        self.loginWindow = LoginWindow()
+        self.hide()
 
     def createOrder(self):
         print("Create order was clicked!")
@@ -438,20 +452,29 @@ class ServiceWindow(QtWidgets.QMainWindow, Ui_ServiceWindow):
     def __init__(self):
         super(ServiceWindow, self).__init__()
         self.setupUi(self)
+        self.actionSkra_ut.triggered.connect(self.logOut)
+        self.actionH_tta.triggered.connect(self.close)
+
+
         self.show()
+
+    def logOut(self):
+        self.menubar.clear()
+        self.loginWindow = LoginWindow()
+        self.hide()
 
 
 
 if __name__ == "__main__":
-    global loggedInUser
-    loggedInUser = Account(EmpID=1, EmpSSN="", Title="Recept",
-                   LName="", FName="Website", Email="",
-                   Phone="", EmpUser="", HireDate="", Zip="",
-                   CityName="", CountryName="", StreetName="",
-                   BuildingNum="", ApartNum="")
+    #global loggedInUser
+    #loggedInUser = Account(EmpID=1, EmpSSN="", Title="Recept",
+    #               LName="", FName="Website", Email="",
+    #               Phone="", EmpUser="", HireDate="", Zip="",
+    #               CityName="", CountryName="", StreetName="",
+    #               BuildingNum="", ApartNum="")
     app = QtWidgets.QApplication(sys.argv)
-    window = ReceptWindow()
-    #window = LoginWindow()
+    #window = ReceptWindow()
+    window = LoginWindow()
     sys.exit(app.exec_())
     # lineEditCusID
 

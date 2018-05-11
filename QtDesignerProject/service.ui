@@ -28,6 +28,7 @@
     </item>
    </layout>
   </widget>
+  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
@@ -37,18 +38,28 @@
      <height>22</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuPantanir">
+   <widget class="QMenu" name="menuForrit">
     <property name="title">
-     <string>Pantanir</string>
+     <string>Forrit</string>
     </property>
-    <addaction name="actionLista_pantanir"/>
+    <addaction name="actionSkra_ut"/>
+    <addaction name="actionH_tta"/>
    </widget>
-   <addaction name="menuPantanir"/>
+   <addaction name="menuForrit"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <action name="actionLista_pantanir">
    <property name="text">
     <string>Lista pantanir</string>
+   </property>
+  </action>
+  <action name="actionSkra_ut">
+   <property name="text">
+    <string>Skrá út</string>
+   </property>
+  </action>
+  <action name="actionH_tta">
+   <property name="text">
+    <string>Hætta</string>
    </property>
   </action>
  </widget>

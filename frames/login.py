@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'login.ui'
+# Form implementation generated from reading ui file 'QtDesignerProject/login.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_LoginForm(object):
     def setupUi(self, LoginForm):
         LoginForm.setObjectName("LoginForm")
-        LoginForm.resize(284, 334)
+        LoginForm.resize(282, 355)
         LoginForm.setInputMethodHints(QtCore.Qt.ImhNone)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(LoginForm)
         self.verticalLayout_2.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
@@ -20,6 +20,7 @@ class Ui_LoginForm(object):
         self.verticalLayout.setObjectName("verticalLayout")
         self.logo = QtWidgets.QLabel(LoginForm)
         self.logo.setText("")
+        self.logo.setPixmap(QtGui.QPixmap(":/logo150.png"))
         self.logo.setObjectName("logo")
         self.verticalLayout.addWidget(self.logo, 0, QtCore.Qt.AlignHCenter)
         self.verticalLayout_2.addLayout(self.verticalLayout)
@@ -68,3 +69,4 @@ class Ui_LoginForm(object):
         self.btncancellogin.setText(_translate("LoginForm", "Hætta"))
         self.btnlogin.setText(_translate("LoginForm", "Innskrá"))
 
+import icons_rc

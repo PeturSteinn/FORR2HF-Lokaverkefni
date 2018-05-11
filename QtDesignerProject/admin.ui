@@ -37,8 +37,26 @@
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuForrit">
+    <property name="title">
+     <string>Forrit</string>
+    </property>
+    <addaction name="actionSkra_ut"/>
+    <addaction name="actionH_tta"/>
+   </widget>
+   <addaction name="menuForrit"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionSkra_ut">
+   <property name="text">
+    <string>Skrá út</string>
+   </property>
+  </action>
+  <action name="actionH_tta">
+   <property name="text">
+    <string>Hætta</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'service.ui'
+# Form implementation generated from reading ui file 'QtDesignerProject/service.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -23,19 +23,24 @@ class Ui_ServiceWindow(object):
         self.horizontalLayout.addWidget(self.label, 0, QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter)
         self.verticalLayout.addLayout(self.horizontalLayout)
         ServiceWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(ServiceWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 528, 22))
-        self.menubar.setObjectName("menubar")
-        self.menuPantanir = QtWidgets.QMenu(self.menubar)
-        self.menuPantanir.setObjectName("menuPantanir")
-        ServiceWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(ServiceWindow)
         self.statusbar.setObjectName("statusbar")
         ServiceWindow.setStatusBar(self.statusbar)
+        self.menubar = QtWidgets.QMenuBar(ServiceWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 528, 22))
+        self.menubar.setObjectName("menubar")
+        self.menuForrit = QtWidgets.QMenu(self.menubar)
+        self.menuForrit.setObjectName("menuForrit")
+        ServiceWindow.setMenuBar(self.menubar)
         self.actionLista_pantanir = QtWidgets.QAction(ServiceWindow)
         self.actionLista_pantanir.setObjectName("actionLista_pantanir")
-        self.menuPantanir.addAction(self.actionLista_pantanir)
-        self.menubar.addAction(self.menuPantanir.menuAction())
+        self.actionSkra_ut = QtWidgets.QAction(ServiceWindow)
+        self.actionSkra_ut.setObjectName("actionSkra_ut")
+        self.actionH_tta = QtWidgets.QAction(ServiceWindow)
+        self.actionH_tta.setObjectName("actionH_tta")
+        self.menuForrit.addAction(self.actionSkra_ut)
+        self.menuForrit.addAction(self.actionH_tta)
+        self.menubar.addAction(self.menuForrit.menuAction())
 
         self.retranslateUi(ServiceWindow)
         QtCore.QMetaObject.connectSlotsByName(ServiceWindow)
@@ -44,6 +49,8 @@ class Ui_ServiceWindow(object):
         _translate = QtCore.QCoreApplication.translate
         ServiceWindow.setWindowTitle(_translate("ServiceWindow", "Hraun Hótel - Þjónustuaðili"))
         self.label.setText(_translate("ServiceWindow", "Service"))
-        self.menuPantanir.setTitle(_translate("ServiceWindow", "Pantanir"))
+        self.menuForrit.setTitle(_translate("ServiceWindow", "Forrit"))
         self.actionLista_pantanir.setText(_translate("ServiceWindow", "Lista pantanir"))
+        self.actionSkra_ut.setText(_translate("ServiceWindow", "Skrá út"))
+        self.actionH_tta.setText(_translate("ServiceWindow", "Hætta"))
 
