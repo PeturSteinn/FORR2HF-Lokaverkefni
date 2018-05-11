@@ -1,8 +1,8 @@
 from Database.HotelConnect import *
 
 Common = CommonPS()
-Address = Address()
 Customer = Customer()
+Address = Address()
 Employee = Employee()
 Hotel = Hotel()
 Item = Item()

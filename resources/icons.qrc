@@ -1,0 +1,11 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+  <file>icons/hotel_and_services/png/room-key-1.png</file>
+  <file>icons/hotel_and_services/png/woman.png</file>
+  <file>icons/hotel_and_services/png/reception.png</file>
+  <file>icons/hotel_and_services/png/notes.png</file>
+  <file>icons/hotel_and_services/png/notebook.png</file>
+  <file>icons/hotel_and_services/png/briefcase.png</file>
+  <file>logo150.png</file>
+</qresource>
+</RCC>

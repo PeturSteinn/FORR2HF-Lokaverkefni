@@ -1,4 +1,4 @@
-USE 0408982209_test;
+USE 0408982209_hotelDB;
 
 -- Debug
 
@@ -122,6 +122,7 @@ DELIMITER ;
 
 -- List availalbe rooms by type and hotel
 
+CALL `CheckAvailability` ('2018-05-15','2018-05-18', 3, 1);
 
 DELIMITER //
 DROP PROCEDURE IF EXISTS `CheckAvailability` //
@@ -131,14 +132,13 @@ CREATE PROCEDURE `CheckAvailability` (
   `Param_HotelID` int,
   `Param_TypeID` int
 )
-BEGIN
-
-	SELECT `Room`.RoomID, `Room`.DoorNum FROM `Order_Has_Rooms` RIGHT JOIN `Room` ON `Room`.RoomID = `Order_Has_Rooms`.RoomID
+BEGIN																													#RIGHT
+	SELECT DISTINCT(`Room`.RoomID), `Room`.DoorNum
+    FROM `Order_Has_Rooms` INNER JOIN `Room` ON `Room`.RoomID = `Order_Has_Rooms`.RoomID
 	WHERE `Room`.HotelID = `Param_HotelID`
 	AND `Room`.TypeID = `Param_TypeID`
-	AND `Room`.RoomID NOT IN
-    (
-    SELECT `Room`.RoomID FROM `Order_Has_Rooms` RIGHT JOIN `Room` ON `Room`.RoomID = `Order_Has_Rooms`.RoomID
+	AND `Room`.RoomID NOT IN (																						#RIGHT
+    SELECT `Room`.RoomID FROM `Order_Has_Rooms` INNER JOIN `Room` ON `Room`.RoomID = `Order_Has_Rooms`.RoomID
 	WHERE `New_Start` < `Order_Has_Rooms`.CheckOutDate
 	AND `New_End` > `Order_Has_Rooms`.CheckInDate
 	AND `Room`.HotelID = `Param_HotelID`
@@ -159,13 +159,16 @@ CREATE PROCEDURE `TotalRoomBill` (
   `Param_OrderID` int
 )
 BEGIN
-  SELECT `Order_Has_Rooms`.CheckInDate, `Order_Has_Rooms`.CheckOutDate, `RoomType`.RoomType, `RoomType`.Cost, DATEDIFF(`Order_Has_Rooms`.CheckOutDate, `Order_Has_Rooms`.CheckInDate) AS DaysStayed, (`RoomType`.Cost * DATEDIFF(`Order_Has_Rooms`.CheckOutDate, `Order_Has_Rooms`.CheckInDate)) AS TotalRoomCost FROM `Order_Has_Rooms`
+  SELECT `Order_Has_Rooms`.CheckInDate, `Order_Has_Rooms`.CheckOutDate, `RoomType`.RoomType, `Room`.DoorNum, `RoomType`.Cost, DATEDIFF(`Order_Has_Rooms`.CheckOutDate, `Order_Has_Rooms`.CheckInDate) AS DaysStayed, (`RoomType`.Cost * DATEDIFF(`Order_Has_Rooms`.CheckOutDate, `Order_Has_Rooms`.CheckInDate)) AS TotalRoomCost, `Hotel`.HotelName, `Order_Has_Rooms`.RoomID, `Order_Has_Rooms`.OrderID
+  FROM `Order_Has_Rooms`
   INNER JOIN `Room` ON `Order_Has_Rooms`.RoomID = `Room`.RoomID
   INNER JOIN `RoomType` ON `Room`.TypeID = `RoomType`.TypeID
+  INNER JOIN `Hotel` ON `Room`.HotelID = `Hotel`.HotelID
   WHERE `Order_Has_Rooms`.OrderID = `Param_OrderID`;
 END //
 DELIMITER ;
 
+CALL `TotalRoomBill`(1);
 
 -- Get total service bill
 
@@ -175,14 +178,32 @@ CREATE PROCEDURE `TotalServiceBill` (
 	`Param_OrderID` int
 )
 BEGIN
-	SELECT `Room`.DoorNum, `Service_Order`.DateTimeOfService, `Item`.ItemName, `Item`.Cost, `Order_Has_Items`.Qty, (`Item`.Cost * `Order_Has_Items`.Qty) AS TotalItemCost FROM `Service_Order`
-    INNER JOIN `Order_Has_Items` ON `Service_Order`.ServiceID = `Order_Has_Items`.ServiceID
+	SELECT `Room`.DoorNum, `ServiceOrder`.DateTimeOfService, `Item`.ItemName, `Item`.Cost, `Order_Has_Items`.Qty, (`Item`.Cost * `Order_Has_Items`.Qty) AS TotalItemCost, `Employee`.LName, `Employee`.FName
+    FROM `ServiceOrder`
+    INNER JOIN `Order_Has_Items` ON `ServiceOrder`.ServiceID = `Order_Has_Items`.ServiceID
     INNER JOIN `Item` ON `Order_Has_Items`.ItemID = `Item`.ItemID
-    INNER JOIN `Room` ON `Service_Order`.RoomID = `Room`.RoomID
-    WHERE `Service_Order`.OrderID = `Param_OrderID`;
+    INNER JOIN `Room` ON `ServiceOrder`.RoomID = `Room`.RoomID
+    INNER JOIN `Employee` ON `ServiceOrder`.EmpID = `Employee`.EmpID
+    WHERE `ServiceOrder`.OrderID = `Param_OrderID`;
 END //
 DELIMITER ;
 
+CALL `TotalServiceBill`(1);
+
+-- Get workplaces that an employee works at
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS `GetWorkplaces` //
+CREATE PROCEDURE `GetWorkplaces` (
+	`Param_EmpID` int
+)
+BEGIN
+	SELECT `Hotel`.HotelName FROM `Staff`
+    INNER JOIN `Hotel` ON `Staff`.HotelID = `Hotel`.HotelID
+    WHERE `Staff`.EmpID = `Param_EmpID`;
+
+END //
+DELIMITER ;
 
 -- Make a reservation
 
@@ -194,11 +215,129 @@ DELIMITER ;
 
 -- Create a service request
 
-/*CALL `Service_OrderAdd`();*/
+/*CALL `ServiceOrderAdd`();*/
 
 -- Add item to cart (services)
 
 /*CALL `ServiceAddItem`(); */
+
+-- Get all orders from a customer
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS `CustomerOrders` //
+CREATE PROCEDURE `CustomerOrders` (
+	`Param_CusID` int
+)
+BEGIN
+	SELECT * FROM `Order`
+    INNER JOIN `Employee` ON `Order`.EmpID = `Employee`.EmpID
+    WHERE `CusID` = `Param_CusID`;
+END //
+DELIMITER ;
+CALL `CustomerOrders` (4);
+
+-- Get all rooms on that order
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS `RoomsOnOrder` //
+CREATE PROCEDURE `RoomsOnOrder` (
+	`Param_OrderID` int
+)
+BEGIN
+	SELECT * FROM `Order_Has_Rooms`
+    INNER JOIN `Room` ON `Order_Has_Rooms`.RoomID = `Room`.RoomID
+    INNER JOIN `RoomType` ON `Room`.TypeID = `RoomType`.TypeID
+    INNER JOIN `Hotel` ON `Room`.HotelID = `Hotel`.HotelID
+    WHERE `OrderID` = `Param_OrderID`;
+END //
+DELIMITER ;
+
+CALL `RoomsOnOrder` (1);
+
+-- Get all services for that room on that order
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS `ServicesOnRooms` //
+CREATE PROCEDURE `ServicesOnRooms` (
+	`Param_OrderID` int,
+    `Param_RoomID` int
+)
+BEGIN
+	SELECT * FROM `ServiceOrder`
+    INNER JOIN `Employee` ON `ServiceOrder`.EmpID = `Employee`.EmpID
+    WHERE `OrderID` = `Param_OrderID`
+    AND `RoomID` = `Param_RoomID`;
+END //
+DELIMITER ;
+
+CALL `ServicesOnRooms` (1, 145);
+
+-- Get details on those services
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS `ServiceDetails` //
+CREATE PROCEDURE `ServiceDetails` (
+	`Param_ServiceID` int
+)
+BEGIN
+	SELECT * FROM `Order_Has_Items`
+    INNER JOIN `Item` ON `Order_Has_Items`.ItemID = `Item`.ItemID
+    WHERE `ServiceID` = `Param_ServiceID`;
+END //
+DELIMITER ;
+
+CALL CustomerList();
+CALL `ServiceDetails`(1);
+SELECT * FROM Customer;
+
+-- What did those service details contain
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS `ServiceItemDetails` //
+CREATE PROCEDURE `ServiceItemDetails` (
+	`Param_OrderItemID` int
+)
+BEGIN
+	SELECT * FROM `Item`
+    WHERE `ItemID` = `Param_OrderItemID`;
+END //
+DELIMITER ;
+
+CALL `ServiceItemDetails` (9);
+
+
+-- List new service orders within the last 24h
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS `ServiceListOrdersByHotel` //
+CREATE PROCEDURE `ServiceListOrdersByHotel` (
+	`Param_HotelID` int
+)
+BEGIN
+    SELECT * FROM `ServiceOrder`
+    INNER JOIN `Room` ON `ServiceOrder`.RoomID = `Room`.RoomID
+    WHERE `Room`.HotelID = `Param_HotelID`
+    AND `ServiceOrder`.DateTimeOfService > DATE_SUB(NOW(), INTERVAL 12 HOUR);
+END //
+DELIMITER ;
+
+-- CALL `ServiceListOrdersByHotel`(3);
+
+
+-- Get a list of rooms that an order has
+
+
+-- List hotels and their address
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS `HotelAbout` //
+CREATE PROCEDURE `HotelAbout` ()
+BEGIN
+	SELECT * FROM `Hotel`
+    INNER JOIN `Address` ON `Hotel`.AddressID = `Address`.AddressID;
+END //
+DELIMITER ;
+
 
 
 -- Standard procedures
@@ -404,21 +543,18 @@ DELIMITER //
 DROP PROCEDURE IF EXISTS `HotelAdd` //
 CREATE PROCEDURE `HotelAdd` (
   `Param_AddressID` int,
-  `Param_HotelName` varchar(40),
-  `Param_TotalRooms` int
+  `Param_HotelName` varchar(40)
 )
 BEGIN
   INSERT INTO `Hotel` (
     `AddressID`,
-    `HotelName`,
-    `TotalRooms`
+    `HotelName`
   )
   VALUES (
     `AddressID` = `Param_AddressID`,
-    `HotelName` = `Param_HotelName`,
-    `TotalRooms` = `Param_TotalRooms`
+    `HotelName` = `Param_HotelName`
   );
-  SELECT LAST_INSERT_ID;
+  SELECT LAST_INSERT_ID();
 END //
 DELIMITER ;
 
@@ -445,15 +581,13 @@ DROP PROCEDURE IF EXISTS `HotelUpdate` //
 CREATE PROCEDURE `HotelUpdate` (
   `Param_HotelID` int,
   `Param_AddressID` int,
-  `Param_HotelName` varchar(40),
-  `Param_TotalRooms` int
+  `Param_HotelName` varchar(40)
 )
 BEGIN
   UPDATE `Hotel`
   SET
   `AddressID` = `Param_AddressID`,
-  `HotelName` = `Param_HotelName`,
-  `TotalRooms` = `Param_TotalRooms`
+  `HotelName` = `Param_HotelName`
   WHERE `HotelID` = `Param_HotelID`;
   SELECT ROW_COUNT();
 END //
@@ -540,6 +674,7 @@ CREATE PROCEDURE `RoomDelete` (
 BEGIN
   DELETE FROM `Room`
   WHERE `RoomID` = `Param_RoomID`;
+  SELECT ROW_COUNT();
 END //
 DELIMITER ;
 
@@ -609,7 +744,10 @@ CREATE PROCEDURE `CustomerUpdate` (
   `Param_LName` varchar(20),
   `Param_FName` varchar(20),
   `Param_Email` varchar(60),
-  `Param_Phone` varchar(15)
+  `Param_Phone` varchar(15),
+  `Param_User` varchar(20),
+  `Param_Pass` varchar(20)
+
 )
 BEGIN
   UPDATE `Customer`
@@ -619,7 +757,9 @@ BEGIN
   `LName` = `Param_LName`,
   `FName` = `Param_FName`,
   `Email` = `Param_Email`,
-  `Phone` = `Param_Phone`
+  `Phone` = `Param_Phone`,
+  `User` = `Param_User`,
+  `Pass` = `Param_Pass`
   WHERE `CusID` = `Param_CusID`;
   SELECT ROW_COUNT();
 END //
@@ -755,6 +895,7 @@ DELIMITER ;
 DELIMITER //
 DROP PROCEDURE IF EXISTS `ItemUpdate` //
 CREATE PROCEDURE `ItemUpdate` (
+  `Param_ItemID` int,
   `Param_ItemName` varchar(70),
   `Param_ItemDetails` varchar(200),
   `Param_Cost` int
@@ -799,7 +940,7 @@ BEGIN
     `Param_EmpID`,
     `Param_HotelID`
   );
-  SELECT ROW_COUNT();
+  SELECT LAST_INSERT_ID();
 END //
 DELIMITER ;
 
@@ -814,7 +955,7 @@ DELIMITER ;
 DELIMITER //
 DROP PROCEDURE IF EXISTS `StaffInfo` //
 CREATE PROCEDURE `StaffInfo` (
-  `Param_HotelID` int
+  `Param_StaffID` int
 )
 BEGIN
   SELECT * FROM `Staff` WHERE `HotelID` = `Param_HotelID`;
@@ -824,18 +965,16 @@ DELIMITER ;
 DELIMITER //
 DROP PROCEDURE IF EXISTS `StaffUpdate` //
 CREATE PROCEDURE `StaffUpdate` (
-  `Param_EmpID_Old` int,
-  `Param_HotelID_Old` int,
-  `Param_EmpID_New` int,
-  `Param_HotelID_New` int
+  `Param_StaffID` int,
+  `Param_EmpID` int,
+  `Param_HotelID` int
 )
 BEGIN
   UPDATE `Staff`
   SET
-  `EmpID` = `Param_EmpID_New`,
-  `HotelID` = `Param_HotelID_New`
-  WHERE `EmpID` = `Param_EmpID_Old`
-  AND `HotelID` = `Param_HotelID_Old`;
+  `EmpID` = `Param_EmpID`,
+  `HotelID` = `Param_HotelID`
+  WHERE `StaffID` = `Param_StaffID`;
   SELECT ROW_COUNT();
 END //
 DELIMITER ;
@@ -843,30 +982,27 @@ DELIMITER ;
 DELIMITER //
 DROP PROCEDURE IF EXISTS `StaffDelete` //
 CREATE PROCEDURE `StaffDelete` (
-  `Param_EmpID` int,
-  `Param_HotelID` int
+  `Param_StaffID` int
 )
 BEGIN
   DELETE FROM `Staff`
-  WHERE `EmpID` = `Param_EmpID`
-  AND `HotelID` = `Param_HotelID`;
+  WHERE `StaffID` = `Param_StaffID`;
   SELECT ROW_COUNT();
 END //
 DELIMITER ;
 
--- Service_Order
+-- ServiceOrder
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS `Service_OrderAdd` //
-CREATE PROCEDURE `Service_OrderAdd` (
+DROP PROCEDURE IF EXISTS `ServiceOrderAdd` //
+CREATE PROCEDURE `ServiceOrderAdd` (
   `Param_RoomID` int,
   `Param_OrderID` int,
   `Param_EmpID` int,
-  `Param_DateTimeOfService` datetime,
-  OUT `Service_NewID` int
+  `Param_DateTimeOfService` datetime
 )
 BEGIN
-  INSERT INTO `Service_Order` (
+  INSERT INTO `ServiceOrder` (
     `RoomID`,
     `OrderID`,
     `EmpID`,
@@ -878,31 +1014,31 @@ BEGIN
     `Param_EmpID`,
     `Param_DateTimeOfService`
   );
-  SELECT LAST_INSERT_ID() INTO `Service_NewID`;
+  SELECT LAST_INSERT_ID();
 END //
 DELIMITER ;
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS `Service_OrderList` //
-CREATE PROCEDURE `Service_OrderList` ()
+DROP PROCEDURE IF EXISTS `ServiceOrderList` //
+CREATE PROCEDURE `ServiceOrderList` ()
 BEGIN
-  SELECT * FROM `Service_Order`;
+  SELECT * FROM `ServiceOrder`;
 END //
 DELIMITER ;
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS `Service_OrderInfo` //
-CREATE PROCEDURE `Service_OrderInfo` (
+DROP PROCEDURE IF EXISTS `ServiceOrderInfo` //
+CREATE PROCEDURE `ServiceOrderInfo` (
   `Param_ServiceID` int
 )
 BEGIN
-  SELECT * FROM `Service_Order` WHERE `ServiceID` = `Param_ServiceID`;
+  SELECT * FROM `ServiceOrder` WHERE `ServiceID` = `Param_ServiceID`;
 END //
 DELIMITER ;
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS `Service_OrderUpdate` //
-CREATE PROCEDURE `Service_OrderUpdate` (
+DROP PROCEDURE IF EXISTS `ServiceOrderUpdate` //
+CREATE PROCEDURE `ServiceOrderUpdate` (
   `Param_ServiceID` int,
   `Param_RoomID` int,
   `Param_OrderID` int,
@@ -910,7 +1046,7 @@ CREATE PROCEDURE `Service_OrderUpdate` (
   `Param_DateTimeOfService` datetime
 )
 BEGIN
-  UPDATE `Service_Order`
+  UPDATE `ServiceOrder`
   SET
     `RoomID` = `Param_RoomID`,
     `OrderID` = `Param_OrderID`,
@@ -922,12 +1058,12 @@ END //
 DELIMITER ;
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS `Service_OrderDelete` //
-CREATE PROCEDURE  `Service_OrderDelete` (
+DROP PROCEDURE IF EXISTS `ServiceOrderDelete` //
+CREATE PROCEDURE  `ServiceOrderDelete` (
   `Param_ServiceID` int
 )
 BEGIN
-  DELETE FROM `Service_Order`
+  DELETE FROM `ServiceOrder`
   WHERE `ServiceID` = `Param_ServiceID`;
   SELECT ROW_COUNT();
 END //
@@ -1013,7 +1149,7 @@ DROP PROCEDURE IF EXISTS `ReservationRoomAdd` //
 CREATE PROCEDURE `ReservationRoomAdd` (
   `Param_OrderID` int,
   `Param_RoomID` int,
-  `Param_CheckInDate` int,
+  `Param_CheckInDate` datetime,
   `Param_CheckOutDate` datetime
 )
 BEGIN
@@ -1029,7 +1165,7 @@ BEGIN
     `Param_CheckInDate`,
     `Param_CheckOutDate`
   );
-  SELECT ROW_COUNT();
+  SELECT LAST_INSERT_ID();
 END //
 DELIMITER ;
 
