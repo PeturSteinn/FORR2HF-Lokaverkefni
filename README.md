@@ -36,6 +36,10 @@ Eftir því hvort þú ert **stjórnandi**, **móttökuritari** eða **þjónust
 
 T.d. sem móttökuritari geturðu: Bókað, bætt við herbergjum á bókun, nýskráð viðskiptavin, flett upp sögu viðskiptavina (bókanir, herbergi, þjónustur).
 
+### Athuga!
+Forritið notast við PyQt5 library!  
+Þess þarf ef þú ætlar að keyra forritið.
+
 ### Leiðbeiningar
 #### Stjórnandi
 Síða ekki til eins og er (*11/5/18*)
