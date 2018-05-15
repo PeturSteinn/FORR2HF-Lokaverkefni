@@ -421,7 +421,7 @@ class ReceptWindow(QtWidgets.QMainWindow, Ui_ReceptionWindow):
                         for service in servicesOnRoom:
                             tmpService = QtWidgets.QTreeWidgetItem(["Pöntunarnúmer: {}".format(service[0])])
                             tmpRoomNum.addChild(tmpService)
-                            serviceDetails = com.ServiceDetails(service[0])
+                            serviceDetails = com.ServiceDetails(service[0]) # taka þetta
 
                             tmpServiceEmp = QtWidgets.QTreeWidgetItem(["Starfsmaður: {}".format(str(service[10]) + " " + str(service[9]))])
                             tmpServiceDate = QtWidgets.QTreeWidgetItem(["Dagsetning: {}".format(service[4])])
@@ -432,6 +432,17 @@ class ReceptWindow(QtWidgets.QMainWindow, Ui_ReceptionWindow):
                             for detail in serviceDetails:
                                 tmpServiceDetail = QtWidgets.QTreeWidgetItem(["{}".format(detail[5])])
                                 tmpService.addChild(tmpServiceDetail)
+                                tmpServiceDetailQty = QtWidgets.QTreeWidgetItem(["Magn: {} stk".format(detail[3])])
+                                try:
+                                    tmpServiceDetailCost = QtWidgets.QTreeWidgetItem(["Verð: {:,},- kr".format(detail[7])])
+                                    tmpServiceDetailTotalCost = QtWidgets.QTreeWidgetItem(["Heildarverð: {:,},- kr".format(detail[8])])
+                                except:
+                                    tmpServiceDetailCost = QtWidgets.QTreeWidgetItem(["Verð: {}".format(detail[7])])
+                                    tmpServiceDetailTotalCost = QtWidgets.QTreeWidgetItem(["Heildarverð: {}".format(detail[8])])
+
+                                tmpServiceDetail.addChild(tmpServiceDetailQty)
+                                tmpServiceDetail.addChild(tmpServiceDetailCost)
+                                tmpServiceDetail.addChild(tmpServiceDetailTotalCost)
 
                 break
 
