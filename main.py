@@ -85,6 +85,8 @@ class LoginWindow(QtWidgets.QDialog, Ui_LoginForm):
         msgBox.exec_()
 
     def check_login(self):
+        emp = Employee()
+        addr = Address()
         user = self.lineEditUser.text()
         passwd = self.lineEditPass.text()
         result = emp.EmployeeList()
@@ -198,6 +200,8 @@ class ReceptWindow(QtWidgets.QMainWindow, Ui_ReceptionWindow):
 
     def createOrder(self):
         print("Create order was clicked!")
+        cus = Customer()
+        res = Reservation()
 
         result = cus.CustomerList()
         for i in result:
@@ -215,6 +219,8 @@ class ReceptWindow(QtWidgets.QMainWindow, Ui_ReceptionWindow):
 
     def addRoomToOrder(self):
         print("Reynt var að bæta við herbergi!")
+        res = Reservation()
+        com = CommonPS()
         self.orderID = self.lineEditOrderID.text()
 
         self.roomID = self.selectAvailableRoom.currentData()
@@ -254,6 +260,8 @@ class ReceptWindow(QtWidgets.QMainWindow, Ui_ReceptionWindow):
 
     def registerCustomer(self):
         print("Reynt var að skrá nýann viðskiptavin!")
+        cus = Customer()
+        com = CommonPS()
 
         result = cus.CustomerList()
         for i in result:
@@ -319,6 +327,7 @@ class ReceptWindow(QtWidgets.QMainWindow, Ui_ReceptionWindow):
                 self.showMessageBox("Viðvörðun!", "Ekki er búið að fylla í þá dálka sem þarf!")
 
     def checkAvailableRooms(self):
+        com = CommonPS()
 
         self.hotelID = self.selectHotelPlace.currentData()
         self.roomTypeID = self.selectRoomType.currentData()
@@ -368,6 +377,8 @@ class ReceptWindow(QtWidgets.QMainWindow, Ui_ReceptionWindow):
 
     def searchCusHistory(self):
         print("Reynt var að leita af customer history")
+        cus = Customer()
+        com = CommonPS()
 
         #cusOrders = QtWidgets.QTreeWidgetItem(["1"])
         #item = QtWidgets.QTreeWidgetItem(["Hello World!"])
@@ -488,5 +499,5 @@ if __name__ == "__main__":
     window = LoginWindow()
     sys.exit(app.exec_())
     # lineEditCusID
-
     # Láta selectAvailableRoom reseta eftir að pantað hefur verið herbergi
+
